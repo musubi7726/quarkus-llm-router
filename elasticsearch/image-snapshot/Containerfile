@@ -1,0 +1,12 @@
+FROM docker.io/elastic/elasticsearch:8.15.0
+
+WORKDIR /usr/share/elasticsearch
+
+COPY --chmod=777 --chown=elasticsearch snapshots /usr/share/elasticsearch/data/snapshots/
+COPY --chmod=664 elasticsearch.yml /usr/share/elasticsearch/config
+
+# Our actual entrypoint is `tini`, a minimal but functional init program. It
+# calls the entrypoint we provide, while correctly forwarding signals.
+ENTRYPOINT ["/bin/tini", "--", "/usr/local/bin/docker-entrypoint.sh"]
+# Dummy overridable parameter parsed by entrypoint
+CMD ["eswrapper"]

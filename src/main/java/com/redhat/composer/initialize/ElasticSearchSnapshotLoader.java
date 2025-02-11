@@ -6,6 +6,7 @@ import io.quarkus.arc.profile.IfBuildProfile;
 import io.quarkus.arc.properties.IfBuildProperty;
 import io.quarkus.runtime.Startup;
 
+import java.beans.BeanProperty;
 import java.io.IOException;
 
 import org.jboss.logging.Logger;
@@ -19,17 +20,24 @@ import co.elastic.clients.util.ApiTypeHelper;
 
 @ApplicationScoped
 @IfBuildProfile("local")
-@IfBuildProperty(name="quarkus.elasticsearch.devservices.image-name",
-                    stringValue="quay.io/hvan/elasticsearch:snapshot-data")
+// @IfBuildProperty(name="elasticsearch.loader.enabled",
+//                     stringValue="true")
+@IfBuildProperty(name="quarkus.elasticsearc/h.devservices.image-name", 
+                stringValue="quay.io/redhat-composer-ai/elasticsearch-snapshot:latest")
 public class ElasticSearchSnapshotLoader {
     private static final Logger LOGGER = Logger.getLogger("ListenerBean");
 
     @Inject
     ElasticsearchClient esClient;
 
-    private static String REPO_NAME = "rh_doc_repo";
-    private static String SNAPSHOT_NAME = "20230623_demo_snapshot";
-    private static String SNAPSHOT_LOCATION = "/usr/share/elasticsearch/data/snapshots";
+    @ConfigProperty(name = "elasticsearch.loader.repo.name", default="rh_doc_repo")
+    private String REPO_NAME;
+
+    @ConfigProperty(name = "elasticsearch.loader.snapshot.name", default="20230623_demo_snapshot")
+    private String SNAPSHOT_NAME;
+
+    @ConfigProperty(name = "elasticsearch.loader.snapshot.location", default="/usr/share/elasticsearch/data/snapshots")
+    private String SNAPSHOT_LOCATION;
 
     @Startup
     void init() {               
@@ -38,7 +46,7 @@ public class ElasticSearchSnapshotLoader {
             createRepository();
             restoreSnapshot();
         } catch (Throwable e) {
-            LOGGER.error("Error loading snapshot data for ElasticSearch...", e);
+            LOGGER.error("Unable to load snapshot data for ElasticSearch...", e);
         }
     }
 

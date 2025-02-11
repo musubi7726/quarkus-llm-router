@@ -123,11 +123,7 @@ weaviate.default.apiKey=<API KEY>
 
 When starting the Quarkus application with the local profile, an ElasticSearch server is initialized with data preloaded snapshot from a custom image: [ElasticSearch-Snapshot GitHub Repo](https://github.com/redhat-composer-ai/elasticsearch-snaphshot).
 
-To DISABLE this behavior, you may comment this property in the `application-local.properties` OR use a different image name:
-
-```
-# quarkus.elasticsearch.devservices.image-name=quay.io/redhat-composer-ai/elasticsearch-snapshot:latest
-```
+To DISABLE this behavior, in the `application-local.properties`, comment or update the `quarkus.elasticsearch.devservices.image-name=quay.io/redhat-composer-ai/elasticsearch-snapshot:latest` property to a different value.
 
 ## Embedding Model
 

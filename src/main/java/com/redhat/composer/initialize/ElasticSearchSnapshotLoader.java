@@ -5,6 +5,7 @@ import jakarta.inject.Inject;
 import io.quarkus.arc.profile.IfBuildProfile;
 import io.quarkus.arc.properties.IfBuildProperty;
 import io.quarkus.runtime.Startup;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import java.beans.BeanProperty;
 import java.io.IOException;
@@ -22,22 +23,22 @@ import co.elastic.clients.util.ApiTypeHelper;
 @IfBuildProfile("local")
 // @IfBuildProperty(name="elasticsearch.loader.enabled",
 //                     stringValue="true")
-@IfBuildProperty(name="quarkus.elasticsearc/h.devservices.image-name", 
+@IfBuildProperty(name="quarkus.elasticsearch.devservices.image-name",
                 stringValue="quay.io/redhat-composer-ai/elasticsearch-snapshot:latest")
 public class ElasticSearchSnapshotLoader {
-    private static final Logger LOGGER = Logger.getLogger("ListenerBean");
+    Logger LOGGER = Logger.getLogger(ElasticSearchSnapshotLoader.class);
 
     @Inject
     ElasticsearchClient esClient;
 
-    @ConfigProperty(name = "elasticsearch.loader.repo.name", default="rh_doc_repo")
-    private String REPO_NAME;
+    @ConfigProperty(name = "elasticsearch.loader.repo.name", defaultValue = "rh_doc_repo")
+    String REPO_NAME;
 
-    @ConfigProperty(name = "elasticsearch.loader.snapshot.name", default="20230623_demo_snapshot")
-    private String SNAPSHOT_NAME;
+    @ConfigProperty(name = "elasticsearch.loader.snapshot.name", defaultValue = "20250201_rh_snapshot")
+    String SNAPSHOT_NAME;
 
-    @ConfigProperty(name = "elasticsearch.loader.snapshot.location", default="/usr/share/elasticsearch/data/snapshots")
-    private String SNAPSHOT_LOCATION;
+    @ConfigProperty(name = "elasticsearch.loader.snapshot.location", defaultValue = "/usr/share/elasticsearch/data/snapshots")
+    String SNAPSHOT_LOCATION;
 
     @Startup
     void init() {               

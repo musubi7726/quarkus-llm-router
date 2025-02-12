@@ -29,16 +29,16 @@ public class ElasticSearchSnapshotLoader {
     Logger LOGGER = Logger.getLogger(ElasticSearchSnapshotLoader.class);
 
     @Inject
-    ElasticsearchClient esClient;
+    private ElasticsearchClient esClient;
 
     @ConfigProperty(name = "elasticsearch.loader.repo.name", defaultValue = "rh_doc_repo")
-    String REPO_NAME;
+    private String REPO_NAME;
 
     @ConfigProperty(name = "elasticsearch.loader.snapshot.name", defaultValue = "20250201_rh_snapshot")
-    String SNAPSHOT_NAME;
+    private String SNAPSHOT_NAME;
 
     @ConfigProperty(name = "elasticsearch.loader.snapshot.location", defaultValue = "/usr/share/elasticsearch/data/snapshots")
-    String SNAPSHOT_LOCATION;
+    private String SNAPSHOT_LOCATION;
 
     @Startup
     void init() {               
